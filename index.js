@@ -28,11 +28,14 @@ console.log(processFirstItem(['foo','bar'],function(str){return str+str}));
   Study the code for counter1 and counter2, then answer the questions below.
   
   1. What is the difference between counter1 and counter2?
-  
+  // counter1 is returning a function and the count while counter2 is only returning the count and no the function
+
   2. Which of the two uses a closure? How can you tell?
-  
+  //counter1. The function is bundled in with the return statement in the main function which is counterMaker
+
   3. In what scenario would the counter1 code be preferable? In what scenario would 
      counter2 be better?  
+  //
 */
 
 // counter1 code
@@ -62,8 +65,8 @@ Use the inning function below to do the following:
 NOTE: This will be a callback function for the tasks below
 */
 
-function inning(/*Code Here*/){
-    /*Code Here*/
+function inning(){
+  return Math.floor(Math.random() * 3);
 }
 
 
@@ -81,8 +84,14 @@ Use the finalScore function below to do the following:
 }
 */ 
 
-function finalScore(/*code Here*/){
-  /*Code Here*/
+function finalScore(inningcb, num){
+  let score = {'Home': 0, 'Away': 0};
+
+  for(let i = 0; i < num; i++){
+    score.Home = score.Home + inningcb();
+    score.Away = score.Away + inningcb();
+  }
+  return score;
 }
 
 /* ⚾️⚾️⚾️ Task 4: getInningScore() ⚾️⚾️⚾️
@@ -90,8 +99,13 @@ Use the getInningScore() function below to do the following:
   1. Receive a callback function - you will pass in the inning function from task 2 as your argument 
   2. Return an object with a score for home and a score for away that populates from invoking the inning callback function */
 
-function getInningScore(/*Your Code Here */) {
-  /*Your Code Here */
+function getInningScore(inningcb) {
+  let score = {'Home': 0, 'Away': 0};
+
+  score.Home = score.Home + inningcb();
+  score.Away = score.Away + inningcb();
+
+  return score;
 }
 
 
@@ -136,8 +150,23 @@ Use the scoreboard function below to do the following:
 ]  
   */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function scoreboard(getInningScorecb, inningcb, num) {
+  let score = [];
+  let finalAway = 0;
+  let finalHome = 0;
+  
+  for(let i = 0; i < num; i++){
+    inningdata = getInningScorecb(inningcb);
+    score.push(`Inning ${i}: Away ${inningdata.Away} - Home ${inningdata.Home}`);
+    finalAway += inningdata.Away;
+    finalHome += inningdata.Home;
+  }
+  if (finalAway == finalHome) {
+    score.push(`This game will require extra innings: Away ${finalAway} Home ${finalHome}`)
+  } else {
+    score.push(`Final Score: Away ${finalAway} Home ${finalHome}`)
+  }
+  return score;
 }
 
 
